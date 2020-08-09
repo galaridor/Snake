@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class GameLoad : MonoBehaviour
 {
-    // Start is called before the first frame update
     private void Start()
     {
         Invoke("LoadGame", 4);

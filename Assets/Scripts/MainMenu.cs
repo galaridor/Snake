@@ -16,7 +16,6 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private int gameCounter;
 
-    // Start is called before the first frame update
     private void Awake()
     {
         bestScore = PlayerPrefs.GetInt("BestScore");

@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
     public GameObject snake;
     public GameObject food;
     public GameObject tailParts;
-    Sprite playerSprite;
+
+    //Sprite playerSprite;
     public Sprite Apple;
     public Sprite SnakeHead;
     public Sprite SnakeBody;
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
     public Color32 snakeColor = new Color(0, 0, 0, 255);
     public Color32 foodColor = new Color(255, 0, 0, 255);
 
-    bool up, down, right, left;
+    private bool up, down, right, left;
 
     [SerializeField]
     float horizontalMove = 0;
@@ -42,19 +43,19 @@ public class GameManager : MonoBehaviour
     private bool isGameOver;
 
     public float moveSpeed = 0.4f;
-    float timer;
+    private float timer;
 
-    enum Direction
+    private enum Direction
     {
         up, down, left, right
     }
 
-    Direction targetDirection;
-    Direction currentDirection;
+    private Direction targetDirection;
+    private Direction currentDirection;
 
-    Grid snakeGrid;
-    Grid appleGrid;
-    Grid previusSnakeGrid;
+    private Grid snakeGrid;
+    private Grid appleGrid;
+    //private Grid previusSnakeGrid;
 
     public Transform cameraT;
 
@@ -73,7 +74,6 @@ public class GameManager : MonoBehaviour
     public GameObject loseScreen;
 
     public GameObject joystick;
-
     public Joystick stick;
 
     public GameObject muteButton;
@@ -86,11 +86,10 @@ public class GameManager : MonoBehaviour
 
     public GameObject pauseText;
 
-    Grid[,] terrainGrid;
-    List<Grid> availableSpots = new List<Grid>();
-    List<Tail> tail = new List<Tail>();
+    private Grid[,] terrainGrid;
+    private List<Grid> availableSpots = new List<Grid>();
+    private List<Tail> tail = new List<Tail>();
 
-    // Start is called before the first frame update
     private void Start()
     {
         if (Application.isEditor)
@@ -118,7 +117,6 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // Update is called once per frame
     private void Update()
     {
         GetInputs();
@@ -200,7 +198,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    Sprite GenerateSprite(Color32 color)
+    private Sprite GenerateSprite(Color32 color)
     {
         Texture2D sprite = new Texture2D(pixel, pixel);
         sprite.SetPixel(0, 0, color);
@@ -210,7 +208,7 @@ public class GameManager : MonoBehaviour
         return Sprite.Create(sprite, rect, Vector2.one * .5f, 1, 0, SpriteMeshType.FullRect);
     }
 
-    void SpawnPlayer()
+    private void SpawnPlayer()
     {
         snake = new GameObject("Snake");
         SpriteRenderer snakeRender = snake.AddComponent<SpriteRenderer>();
@@ -225,7 +223,7 @@ public class GameManager : MonoBehaviour
         tailParts = new GameObject("tailParts");
     }
 
-    Grid GetGrid(int x, int y)
+    private Grid GetGrid(int x, int y)
     {
         if (x < 0 || x > width - 1 || y < 0 || y > height - 1)
         {
@@ -234,7 +232,7 @@ public class GameManager : MonoBehaviour
         return terrainGrid[x, y];
     }
 
-    void GetInputs()
+    private void GetInputs()
     {
         if (Application.isEditor)
         {
@@ -251,7 +249,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void MoveSnake()
+    private void MoveSnake()
     {
         int x = 0;
         int y = 0;
@@ -358,7 +356,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SetDirection(Direction d)
+    private void SetDirection(Direction d)
     {
         if (!IsMovePossible(d))
         {
@@ -366,7 +364,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SnakeDirection()
+    private void SnakeDirection()
     {
         if (up || verticalMove > 0.5f)
         {
@@ -386,7 +384,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void PlaceCamera()
+    private  void PlaceCamera()
     {
         Grid g = GetGrid(width / 2, height / 2);
         Vector3 p = g.worldPosition;
@@ -394,7 +392,7 @@ public class GameManager : MonoBehaviour
         cameraT.position = p;
     }
 
-    void SpawnApple()
+    private void SpawnApple()
     {
         food = new GameObject("Apple");
         SpriteRenderer appleRenderer = food.AddComponent<SpriteRenderer>();
@@ -404,7 +402,7 @@ public class GameManager : MonoBehaviour
         RandomFoodPlace();
     }
 
-    void RandomFoodPlace()
+    private void RandomFoodPlace()
     {
         int random = Random.Range(0, availableSpots.Count);
         Grid g = availableSpots[random];
@@ -412,7 +410,7 @@ public class GameManager : MonoBehaviour
         appleGrid = g;
     }
 
-    Tail GenerateTail(int x, int y)
+    private Tail GenerateTail(int x, int y)
     {
         Tail tail = new Tail();
         tail.grid = GetGrid(x, y);
@@ -427,7 +425,7 @@ public class GameManager : MonoBehaviour
         return tail;
     }
 
-    void MoveTail()
+    private void MoveTail()
     {
         Grid previousGrid = null;
 
@@ -452,13 +450,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void PlaceObject(GameObject obj, Vector3 pos)
+    private void PlaceObject(GameObject obj, Vector3 pos)
     {
         pos += Vector3.one * .5f;
         obj.transform.position = pos;
     }
 
-    bool IsMovePossible(Direction dir)
+    private bool IsMovePossible(Direction dir)
     {
         switch (dir)
         {
@@ -486,7 +484,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    bool IsTailHit(Grid g)
+    private bool IsTailHit(Grid g)
     {
         for (int i = 0; i < tail.Count; i++)
         {
@@ -515,13 +513,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void WonScreen()
+    private void WonScreen()
     {
         wonAudio.enabled = true;
         wonScreen.SetActive(true);
     }
 
-    void LoseScreen()
+    private void LoseScreen()
     {
         loseAudio.enabled = true;
         loseScreen.SetActive(true);
@@ -534,7 +532,7 @@ public class GameManager : MonoBehaviour
 
     public void MuteAudio()
     {
-        if(audioManager.activeSelf)
+        if (audioManager.activeSelf)
         {
             backgroundAudio.Pause();
             audioManager.SetActive(false);
@@ -546,7 +544,6 @@ public class GameManager : MonoBehaviour
             audioManager.SetActive(true);
             muteButton.GetComponent<Image>().sprite = muteSound;
         }
-
     }
 
     public void Pause()
