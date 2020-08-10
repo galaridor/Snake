@@ -689,8 +689,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 500
-  m_fontSizeBase: 500
+  m_fontSize: 100
+  m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -699,7 +699,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -3018,15 +3018,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d84c960a7a234794c96ae399c7f66768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainPanel: {fileID: 0}
   records: {fileID: 273133781}
   clickSound: {fileID: 258864769}
   backgroundAudio: {fileID: 1742409988}
   muteButton: {fileID: 1212333371}
   muteSound: {fileID: 21300000, guid: 6ab5e8afc04e41c4ba35801f1d068a39, type: 3}
   unMuteSound: {fileID: 21300000, guid: 85ef4131ccbcbf14a999113b2d5e0457, type: 3}
-  lastScore: 0
-  bestScore: 0
   gameCounter: 0
 --- !u!1 &1742409987
 GameObject:
@@ -3346,7 +3343,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: THE BEST RECORD
+  m_text: TOP 10 RECORDS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}

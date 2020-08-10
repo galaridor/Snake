@@ -23,7 +23,6 @@ public class GameManager : MonoBehaviour
     public GameObject food;
     public GameObject tailParts;
 
-    //Sprite playerSprite;
     public Sprite Apple;
     public Sprite SnakeHead;
     public Sprite SnakeBody;
@@ -55,7 +54,6 @@ public class GameManager : MonoBehaviour
 
     private Grid snakeGrid;
     private Grid appleGrid;
-    //private Grid previusSnakeGrid;
 
     public Transform cameraT;
 
@@ -125,6 +123,7 @@ public class GameManager : MonoBehaviour
         SnakeDirection();
 
         timer += Time.deltaTime;
+
         if (timer > moveSpeed)
         {
             timer = 0;
@@ -290,16 +289,14 @@ public class GameManager : MonoBehaviour
         if (moveSpot == null)
         {
             isGameOver = true;
-            PlayerPrefs.SetInt("LastScore", score);
-            PlayerPrefs.Save();
+            Scores.allScores.Add(score);
         }
         else
         {
             if (IsTailHit(moveSpot))
             {
                 isGameOver = true;
-                PlayerPrefs.SetInt("LastScore", score);
-                PlayerPrefs.Save();
+                Scores.allScores.Add(score);
             }
             else
             {
@@ -321,8 +318,7 @@ public class GameManager : MonoBehaviour
                     if (score == 20)
                     {
                         isGameOver = true;
-                        PlayerPrefs.SetInt("LastScore", score);
-                        PlayerPrefs.Save();
+                        Scores.allScores.Add(score);
                     }
                     tail.Add(GenerateTail(previuosGrid.x, previuosGrid.y));
                     availableSpots.Remove(previuosGrid);
@@ -348,8 +344,7 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         isGameOver = true;
-                        PlayerPrefs.SetInt("LastScore", score);
-                        PlayerPrefs.Save();
+                        Scores.allScores.Add(score);
                     }
                 }
             }
@@ -419,7 +414,6 @@ public class GameManager : MonoBehaviour
         tail.obj.transform.position = tail.grid.worldPosition;
         tail.obj.transform.localScale = Vector3.one * .8f;
         SpriteRenderer r = tail.obj.AddComponent<SpriteRenderer>();
-        //r.sprite = playerSprite;
         r.sprite = SnakeBody;
         r.sortingOrder = 1;
         return tail;
@@ -444,6 +438,22 @@ public class GameManager : MonoBehaviour
                 Grid prev = t.grid;
                 t.grid = previousGrid;
                 previousGrid = prev;
+            }
+
+            switch (currentDirection)
+            {
+                case Direction.up:
+                    t.obj.transform.eulerAngles = new Vector3(0, 0, 0.0f);
+                    break;
+                case Direction.down:
+                    t.obj.transform.eulerAngles = new Vector3(0, 0, 0.0f);
+                    break;
+                case Direction.left:
+                    t.obj.transform.eulerAngles = new Vector3(0, 0, 90.0f);
+                    break;
+                case Direction.right:
+                    t.obj.transform.eulerAngles = new Vector3(0, 0, 90.0f);
+                    break;
             }
             availableSpots.Remove(t.grid);
             PlaceObject(t.obj, t.grid.worldPosition);

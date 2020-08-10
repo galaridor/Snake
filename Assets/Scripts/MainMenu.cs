@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject mainPanel;
     public GameObject records;
 
     public AudioSource clickSound;
@@ -17,18 +16,10 @@ public class MainMenu : MonoBehaviour
     public Sprite unMuteSound;
 
     [SerializeField]
-    private int lastScore;
-
-    [SerializeField]
-    private int bestScore;
-
-    [SerializeField]
     private int gameCounter;
 
     private void Awake()
     {
-        bestScore = PlayerPrefs.GetInt("BestScore");
-        lastScore = PlayerPrefs.GetInt("LastScore");
         gameCounter = PlayerPrefs.GetInt("gameCounter");
 
         SetRecords();
@@ -43,13 +34,24 @@ public class MainMenu : MonoBehaviour
     {
         if (gameCounter > 0)
         {
-            if(lastScore> bestScore)
+            Scores.allScores.Sort();
+            Scores.allScores.Reverse();
+
+            int n = 0;
+
+            if(Scores.allScores.Count < 10)
             {
-                bestScore = lastScore;
-                PlayerPrefs.SetInt("BestScore",bestScore);
-                PlayerPrefs.Save();
+                n = Scores.allScores.Count;
             }
-            records.GetComponent<TextMeshProUGUI>().text = bestScore.ToString();
+            else if (Scores.allScores.Count >= 10)
+            {
+                n = 10;
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                records.GetComponent<TextMeshProUGUI>().text = records.GetComponent<TextMeshProUGUI>().text + " " + Scores.allScores[i].ToString();
+            }             
         }
     }
 
