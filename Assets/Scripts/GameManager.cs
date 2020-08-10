@@ -440,21 +440,6 @@ public class GameManager : MonoBehaviour
                 previousGrid = prev;
             }
 
-            switch (currentDirection)
-            {
-                case Direction.up:
-                    t.obj.transform.eulerAngles = new Vector3(0, 0, 0.0f);
-                    break;
-                case Direction.down:
-                    t.obj.transform.eulerAngles = new Vector3(0, 0, 0.0f);
-                    break;
-                case Direction.left:
-                    t.obj.transform.eulerAngles = new Vector3(0, 0, 90.0f);
-                    break;
-                case Direction.right:
-                    t.obj.transform.eulerAngles = new Vector3(0, 0, 90.0f);
-                    break;
-            }
             availableSpots.Remove(t.grid);
             PlaceObject(t.obj, t.grid.worldPosition);
         }
