@@ -1,11 +1,20 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
     public GameObject mainPanel;
     public GameObject records;
+
+    public AudioSource clickSound;
+    public AudioSource backgroundAudio;
+
+    public GameObject muteButton;
+
+    public Sprite muteSound;
+    public Sprite unMuteSound;
 
     [SerializeField]
     private int lastScore;
@@ -47,5 +56,25 @@ public class MainMenu : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void ClickSound()
+    {
+        clickSound.enabled = true;
+        clickSound.Play();
+    }
+
+    public void MuteAudio()
+    {
+            if (backgroundAudio.isPlaying)
+            {
+                backgroundAudio.Pause();
+                muteButton.GetComponent<Image>().sprite = unMuteSound;
+            }
+            else if (!backgroundAudio.isPlaying)
+            {
+                backgroundAudio.Play();
+                muteButton.GetComponent<Image>().sprite = muteSound;
+            }        
     }
 }

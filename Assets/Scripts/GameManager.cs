@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
     public AudioSource eatAudio;
     public AudioSource wonAudio;
     public AudioSource loseAudio;
+    public AudioSource clickSound;
 
     public GameObject background;
     public GameObject wonScreen;
@@ -214,7 +215,7 @@ public class GameManager : MonoBehaviour
         SpriteRenderer snakeRender = snake.AddComponent<SpriteRenderer>();
         //playerSprite = GenerateSprite(snakeColor);
         snakeRender.sprite = SnakeHead;
-        snakeRender.sortingOrder = 1;
+        snakeRender.sortingOrder = 2;
         int xSpawn = Random.Range(1, width - 5);
         int ySpawn = Random.Range(1, height - 1);
         snakeGrid = GetGrid(xSpawn, ySpawn);
@@ -240,7 +241,6 @@ public class GameManager : MonoBehaviour
             down = Input.GetKeyDown(KeyCode.DownArrow);
             left = Input.GetKeyDown(KeyCode.LeftArrow);
             right = Input.GetKeyDown(KeyCode.RightArrow);
-
         }
         else if (!Application.isEditor)
         {
@@ -257,30 +257,30 @@ public class GameManager : MonoBehaviour
         switch (currentDirection)
         {
             case Direction.up:
-                if (snake.transform.rotation.z != 0.0f)
-                {
-                    snake.transform.eulerAngles = new Vector3(snake.transform.eulerAngles.x, snake.transform.eulerAngles.y, 0.0f);
-                }
-                y = 1;
-                break;
-            case Direction.down:
                 if (snake.transform.rotation.z != 180.0f)
                 {
                     snake.transform.eulerAngles = new Vector3(snake.transform.eulerAngles.x, snake.transform.eulerAngles.y, 180.0f);
                 }
+                y = 1;
+                break;
+            case Direction.down:
+                if (snake.transform.rotation.z != 0.0f)
+                {
+                    snake.transform.eulerAngles = new Vector3(snake.transform.eulerAngles.x, snake.transform.eulerAngles.y, 0.0f);
+                }
                 y = -1;
                 break;
             case Direction.left:
-                if (snake.transform.rotation.z != 90.0f)
+                if (snake.transform.rotation.z != -90.0f)
                 {
-                    snake.transform.eulerAngles = new Vector3(snake.transform.eulerAngles.x, snake.transform.eulerAngles.y, 90.0f);
+                    snake.transform.eulerAngles = new Vector3(snake.transform.eulerAngles.x, snake.transform.eulerAngles.y, -90.0f);
                 }
                 x = -1;
                 break;
             case Direction.right:
-                if (snake.transform.rotation.z != -90.0f)
+                if (snake.transform.rotation.z != 90.0f)
                 {
-                    snake.transform.eulerAngles = new Vector3(snake.transform.eulerAngles.x, snake.transform.eulerAngles.y, -90.0f);
+                    snake.transform.eulerAngles = new Vector3(snake.transform.eulerAngles.x, snake.transform.eulerAngles.y, 90.0f);
                 }
                 x = 1;
                 break;
@@ -532,17 +532,20 @@ public class GameManager : MonoBehaviour
 
     public void MuteAudio()
     {
-        if (audioManager.activeSelf)
+        if (!isGameOver)
         {
-            backgroundAudio.Pause();
-            audioManager.SetActive(false);
-            muteButton.GetComponent<Image>().sprite = unMuteSound;
-        }
-        else if (!audioManager.activeSelf)
-        {
-            backgroundAudio.Play();
-            audioManager.SetActive(true);
-            muteButton.GetComponent<Image>().sprite = muteSound;
+            if (audioManager.activeSelf)
+            {
+                backgroundAudio.Pause();
+                audioManager.SetActive(false);
+                muteButton.GetComponent<Image>().sprite = unMuteSound;
+            }
+            else if (!audioManager.activeSelf)
+            {
+                backgroundAudio.Play();
+                audioManager.SetActive(true);
+                muteButton.GetComponent<Image>().sprite = muteSound;
+            }
         }
     }
 
@@ -561,6 +564,15 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0.0f;
             background.SetActive(true);
             pauseButton.GetComponent<Image>().sprite = unpause;
+        }
+    }
+
+    public void ClickSound()
+    {
+        if (!isGameOver)
+        {
+            clickSound.enabled = true;
+            clickSound.Play();
         }
     }
 }
