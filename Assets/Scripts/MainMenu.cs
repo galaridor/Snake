@@ -18,9 +18,14 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private int gameCounter;
 
+    [SerializeField]
+    private int[] bestRecords = new int[10];
+
     private void Awake()
     {
         gameCounter = PlayerPrefs.GetInt("gameCounter");
+
+        bestRecords = Scores.allScores.ToArray();
 
         SetRecords();
     }
@@ -34,6 +39,15 @@ public class MainMenu : MonoBehaviour
     {
         if (gameCounter > 0)
         {
+            if(Scores.allScores.Count < 1)
+            {
+                bestRecords = PlayerPrefsX.GetIntArray("AllScores");
+                for (int i = 0; i < bestRecords.Length; i++)
+                {
+                    Scores.allScores.Add(bestRecords[i]);
+                }
+            }
+
             Scores.allScores.Sort();
             Scores.allScores.Reverse();
 
@@ -55,8 +69,16 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        PlayerPrefsX.SetIntArray("AllScores", bestRecords);
+        PlayerPrefs.Save();
+    }
+
     public void Quit()
     {
+        PlayerPrefsX.SetIntArray("AllScores", bestRecords);
+        PlayerPrefs.Save();
         Application.Quit();
     }
 
